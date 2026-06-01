@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hostel Complaint System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <!-- Top Navbar: Welcome & Logout -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-primary m-0">Hostel Complaint System</h2>
+            <div class="d-flex align-items-center">
+                <span class="me-3 fw-bold">Welcome, {{ request.user.username }}!</span>
+                <form action="{% url 'logout' %}" method="POST" class="m-0">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Logout</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Form Wala Hissa -->
+            <div class="col-md-5 mb-4">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Submit New Issue</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button type="submit" class="btn btn-success w-100 mt-2">Submit Complaint</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Complaints List Wala Hissa -->
+            <div class="col-md-7">
+                <div class="card shadow">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="mb-0">My Active Complaints</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            {% for c in complaints %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>{{ c.category }}</strong> <br>
+                                        <small class="text-muted">Room: {{ c.room_number }}</small>
+                                    </div>
+                                    <span class="badge bg-warning text-dark">{{ c.status }}</span>
+                                </li>
+                            {% empty %}
+                                <p class="text-muted text-center mt-3">You haven't submitted any complaints yet.</p>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
